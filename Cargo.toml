@@ -1,0 +1,35 @@
+[package]
+name = "twigs"
+version = "0.1.0"
+edition = "2024"
+authors = ["Akari Harada <akaritwo0two@gmail.com>"]
+license = "GPL-3"
+
+[dependencies]
+rayon = "1.10.0"
+vec-utils = { version = "0.1.2", path = "../vec-utils" }
+log = "0.4.27"
+env_logger = "0.11.8"
+itertools = "0.13.0"
+nalgebra = "0.33.2"
+wgpu = "22.1.0"
+wasm-bindgen = "0.2.93"
+cfg-if = "1.0.0"
+web-sys = "0.3.70"
+winit = { version = "0.29.15", features = ["rwh_05"] }
+pollster = "0.3"
+bytemuck = { version = "1.18", features = [ "derive" ] }
+cgmath = "0.18.0"
+
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1.6"
+console_log = "1.0"
+wgpu = { version = "22.0", features = ["webgl"]}
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Window",
+    "Element",
+]}
