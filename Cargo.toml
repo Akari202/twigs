@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Akari Harada <akaritwo0two@gmail.com>"]
 license = "GPL-3"
+repository = "https://github.com/Akari202/twigs"
 
 [dependencies]
 rayon = "1.10.0"

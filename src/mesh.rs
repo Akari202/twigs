@@ -6,12 +6,14 @@ use crate::render::vertex::Vertex;
 
 pub mod load;
 
+#[derive(Debug, Clone)]
 pub struct Mesh {
     nodes: Vec<Vec3d>,
     elements: Vec<Element>,
     material: Material
 }
 
+#[derive(Debug, Clone)]
 pub struct Element {
     nodes: Vec<usize>
 }
@@ -71,6 +73,14 @@ impl Element {
         Self {
             nodes
         }
+    }
+}
+
+impl Index<usize> for &Element {
+    type Output = usize;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.nodes[index]
     }
 }
 

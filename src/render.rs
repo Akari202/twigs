@@ -345,46 +345,8 @@ impl<'a> State<'a> {
         )
     }
 
-    pub(crate) fn write_buffers(&mut self, nodes: Vec<Vec3d>, elements: Vec<Vec<usize>>) {
+    pub(crate) fn write_buffers(&mut self, nodes: Vec<Vertex>, connections: Vec<u16>) {
         let mut buffers: Vec<(Vec<Vertex>, Vec<u16>)> = Vec::new();
-
-        let color = [1.0, 1.0, 1.0];
-        let nodes = nodes
-            .iter()
-            .map(|i| {
-                Vertex::from_vec3d(i, color).scale(50.0)
-            })
-            .collect::<Vec<Vertex>>();
-        let connections = elements
-            .iter()
-            .map(|i| {
-                vec![
-                    i[0], i[1],
-                    i[0], i[3],
-                    i[0], i[4],
-                    i[1], i[2],
-                    i[1], i[5],
-                    i[2], i[3],
-                    i[2], i[6],
-                    i[3], i[7],
-                    i[4], i[5],
-                    i[4], i[7],
-                    i[5], i[6],
-                    i[6], i[7],
-
-                    // i[0], i[2],
-                    // i[0], i[5],
-                    // i[0], i[7],
-                    // i[1], i[6],
-                    // i[3], i[6],
-                    // i[4], i[6]
-                ]
-            })
-            .flatten()
-            .map(|i| {
-                i as u16
-            })
-            .collect::<Vec<u16>>();
 
         buffers.push((nodes, connections));
 

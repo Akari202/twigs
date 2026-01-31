@@ -1,39 +1,44 @@
 use std::error::Error;
 use std::fs;
-use std::io::BufRead;
+use std::io::{BufRead, BufReader};
 use log::{debug, trace};
 use vec_utils::vec3d::Vec3d;
 use crate::material::Material;
-use crate::mesh::Mesh;
+use crate::mesh::{Element, Mesh};
 
 impl Mesh {
-    pub fn load(name: String) -> Result<Self, Box<dyn Error>> {
-        let elements_file_name = format!("{}Elements", &name);
-        let elements_file = fs::File::open(elements_file_name)?;
-        let elements = elements_file
+    pub fn load(name: String, material: Material) -> Result<Self, Box<dyn Error>> {
+        let elements_file_name = format!("./meshes/{}Elements", &name);
+        debug!("Loading elements from {}", &elements_file_name);
+        let elements_reader = BufReader::new(fs::File::open(&elements_file_name)?);
+        let elements = elements_reader
             .lines()
             .enumerate()
             .map(|(i, j)| {
+                let j = j.unwrap();
                 let mut split = j.split(",");
                 split.next();
-                let element = split
+                let element = Element::new(split
                     .map(|k| {
                         k.trim()
                             .parse::<usize>()
                             .unwrap() - 1
                     })
-                    .collect::<Vec<usize>>();
+                    .collect::<Vec<usize>>()
+                );
                 trace!("Parsed element {}: {:?}", i, &element);
                 element
             })
-            .collect::<Vec<Vec<usize>>>();
+            .collect::<Vec<Element>>();
         debug!("Parsed {} elements", elements.len());
-        let nodes_file_name = format!("{}Nodes", &name);
-        let nodes_file = fs::File::open(nodes_file_name)?;
-        let mut nodes = nodes_file
+        let nodes_file_name = format!("./meshes/{}Nodes", &name);
+        debug!("Loading nodes from {}", &nodes_file_name);
+        let nodes_reader = BufReader::new(fs::File::open(nodes_file_name)?);
+        let mut nodes = nodes_reader
             .lines()
             .enumerate()
             .map(|(i, j)| {
+                let j = j.unwrap();
                 let mut split = j.split(",");
                 split.next();
                 let x = split.next().unwrap().trim().parse::<f64>().unwrap();
@@ -48,7 +53,7 @@ impl Mesh {
         Ok(Self {
             nodes,
             elements,
-            material: Material::
+            material
         })
     }
 }
